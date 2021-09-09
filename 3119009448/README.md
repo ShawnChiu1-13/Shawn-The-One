@@ -14,3 +14,18 @@
 我们提供一份样例，课堂上下发，上传到班级群，使用方法是：orig.txt是原文，其他orig_add.txt等均为抄袭版论文。
 
 注意：答案文件中输出的答案为浮点型，精确到小数点后两位
+
+补充一下第一次尝试的过程
+我先是在CSDN上查阅了一些判定相似度的算法资料
+1.
+defi compare(file1,file2):
+lines1= readLines(file1) lines2 readlines(file2)
+
+count =0.
+for line in lines1:
+if lines2.count line)>0
+count +=1
+return count / max(len(lines1)，len(lines2))
+这样的结果是查重率高得离谱，果断放弃。
+
+2.
