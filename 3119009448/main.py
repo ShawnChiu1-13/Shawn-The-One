@@ -15,3 +15,6 @@ def get_file_contents(path):
 
 def filter(string):
     content = re.compile(u"[^a-zA-Z0-9\u4e00-\u9fa5]") #先将读取内容的标点符号、转义符号等去掉，
+    string = content.sub("", string)
+    output = lcut(string)
+    return output
