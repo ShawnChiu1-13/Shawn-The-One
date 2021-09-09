@@ -36,3 +36,18 @@ return count / max(len(lines1)，len(lines2))
 这样的结果是查重率高得离谱，果断放弃。
 
 2.
+然后网上资料显示，Python有自带的查重函数difflib
+
+import difflib
+
+def string similar(s1,s2):
+
+return difflib.sequenceMatcher(None，s1,s2).quick_ratio() 
+for i in range(len(data4_message)):
+
+s1 data4 message[i]
+
+s2= data4 answer[i]
+
+print(string_similar(s1，s2))
+
