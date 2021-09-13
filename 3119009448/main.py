@@ -1,20 +1,35 @@
-import jieba     #导入jieba库，用于中文句子分词
-import gensim    #导入gensim，用于计算文本相似度
-import re        #使Python拥有全部的正则表达式的功能
+import jieba
+import re
+from gensim import corpora
+from gensim.similarities import Similarity
+import gensim
+import os
+import sys
 
-# 获取指定路径的文件内容
-def get_file_contents(path):
+
+def Symbol_filter(str):
+    # 使用正则表达式过滤标点符号
+    result = re.sub('\W+', '', str).replace("_", '')
+    return result
+
+
+def get_content(path):
+    # 文本处理，将我们的文本处理为字符串，并且过滤掉标点符号
     string = ''
-    f = open(path, 'r', encoding='UTF-8')
-    line = f.readline()                  #该方法每次读出一行内容，所以，读取时占用内存小，比较适合大文件，该方法返回一个字符串对象。
-    while line:
-        string = string + line
-        line = f.readline()
-    f.close()
-    return string                       #关闭文件，不能再进行读写操作
+    file = open(path, 'r', encoding='UTF-8')
+    one_line = file.readline()
+    while one_line:
+        string += one_line
+        one_line = file.readline()
+    # 调用标点符号过滤函数
+    string = Symbol_filter(string)
+    file.close()
+    return string
 
-def filter(string):
-    content = re.compile(u"[^a-zA-Z0-9\u4e00-\u9fa5]") #先将读取内容的标点符号、转义符号等去掉，
-    string = content.sub("", string)
-    output = lcut(string)
-    return output
+
+def Turn_vector(str):
+    # 将我们的字符串切片
+    string = jieba.lcut(str)
+    return string
+
+
