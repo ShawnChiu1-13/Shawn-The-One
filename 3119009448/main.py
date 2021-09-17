@@ -36,4 +36,12 @@ def tfidf_model(items,sim_items):
     #索引持久性
     index.save('index.txt')
 
-
+#求相似度列表
+    sim_value = []
+    for i in range(0,len(sim_items)):
+        sim_vec = dictionary.doc2bow(sim_items[i])
+        sim = index[tf[sim_vec]]
+    #取相似度最大的值
+        sim_max = max(sim)
+        sim_value.append(sim_max)
+    return sim_value
