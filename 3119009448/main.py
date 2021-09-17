@@ -5,31 +5,20 @@ from gensim.similarities import Similarity
 import gensim
 import os
 import sys
-
-
-def Symbol_filter(str):
-    # 使用正则表达式过滤标点符号
-    result = re.sub('\W+', '', str).replace("_", '')
-    return result
-
-
-def get_content(path):
-    # 文本处理，将我们的文本处理为字符串，并且过滤掉标点符号
-    string = ''
-    file = open(path, 'r', encoding='UTF-8')
-    one_line = file.readline()
-    while one_line:
-        string += one_line
-        one_line = file.readline()
-    # 调用标点符号过滤函数
-    string = Symbol_filter(string)
-    file.close()
-    return string
-
-
-def Turn_vector(str):
-    # 将我们的字符串切片
-    string = jieba.lcut(str)
-    return string
+import time
+#相比于上次修改更高校
+#文档分句，删除符号，保留中文
+def creat_sentence(file_data):
+    file_sentence = []
+    s = ''
+    for word in file_data:
+        #中文编码范围（引自网上）
+        if '\u4e00'<=word<='\u9fff':
+            s += word
+        #逗号分句
+        elif word == '，':
+            file_sentence.append(s)
+            s = ''
+    return file_sentence
 
 
