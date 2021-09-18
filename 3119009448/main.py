@@ -64,3 +64,47 @@ def get_weight(file_data,file_sentence):
         weight.append(quanzhong/file_len)
         quanzhong = 0
     return weight
+
+if __name__ == '__main__':
+    #开始计时
+    time_start = time.time()
+    #打开原始文档
+    path1 = sys.argv[1]    #原始文本路径
+    path2 = sys.argv[2]    #相似文本路径
+    path3 = sys.argv[3]    #存放答案文本路径
+    orig_file = open(path1,'r', encoding='UTF-8')
+    #打开相似文档
+    sim_file = open(path2,'r',encoding='utf-8')
+    #原始文档写入
+    orig_data = orig_file.read()
+    #相似文档写入
+    sim_data = sim_file.read()
+    #关闭原始文档和相似文档
+    orig_file.close()
+    sim_file.close()
+    
+    #对原始文档进行分句分词
+    orig_sentence =creat_sentence(orig_data)
+    orig_word = [[word for word in jieba.lcut(sentence)] for sentence in orig_sentence]
+    #对相似文档进行分句分词
+    sim_sentence = creat_sentence(sim_data)
+    sim_word = [[word for word in jieba.lcut(sentence)] for sentence in sim_sentence]
+    #获取相似文档的权重列表
+    weight = get_weight(sim_data,sim_sentence)
+    #获取相似文档相似度列表
+    sim_value = tfidf_model(orig_word,sim_word)
+    #total_similiarities用于存放最后总相似度，为每句权重和相似度的积
+    total_similiarities = 0
+    for i in range(len(weight)):
+        total_similiarities += weight[i]*sim_value[i]
+    total_similiarities = (str("%.2f") % total_similiarities)
+    print(total_similiarities)
+    #将结果输出至指定文档
+    file = open(path3,'w', encoding='UTF-8')
+    file.write(total_similiarities)
+    file.close()
+
+    time_end = time.time()
+    #得出耗时
+    time = time_end-time_start
+    print("time = ",time)
