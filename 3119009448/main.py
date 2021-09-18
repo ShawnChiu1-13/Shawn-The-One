@@ -74,34 +74,41 @@ if __name__ == '__main__':
     path3 = sys.argv[3]    #存放答案文本路径
     orig_file = open(path1,'r', encoding='UTF-8')
     #打开相似文档
-    sim_file = open(path2,'r',encoding='utf-8')
+    similiar_file = open(path2,'r',encoding='utf-8')
     #原始文档写入
     orig_data = orig_file.read()
     #相似文档写入
-    sim_data = sim_file.read()
+    similiar_data = similiar_file.read()
     #关闭原始文档和相似文档
     orig_file.close()
-    sim_file.close()
-    
+    similiar_file.close()
+    #空文本判断异常（新增）
+    if len(orig_data) == 0:
+        print("原始文本为空")
+        raise
+
+    elif len(similiar_data) == 0:
+        print("相似文本为空")
+        raise
     #对原始文档进行分句分词
     orig_sentence =creat_sentence(orig_data)
     orig_word = [[word for word in jieba.lcut(sentence)] for sentence in orig_sentence]
     #对相似文档进行分句分词
-    sim_sentence = creat_sentence(sim_data)
-    sim_word = [[word for word in jieba.lcut(sentence)] for sentence in sim_sentence]
+    similiar_sentence = creat_sentence(similiar_data)
+    similiar_word = [[word for word in jieba.lcut(sentence)] for sentence in similiar_sentence]
     #获取相似文档的权重列表
-    weight = get_weight(sim_data,sim_sentence)
+    weight = get_weight(similiar_data,similiar_sentence)
     #获取相似文档相似度列表
-    sim_value = tfidf_model(orig_word,sim_word)
-    #total_similiarities用于存放最后总相似度，为每句权重和相似度的积
-    total_similiarities = 0
+    similiar_value = tfidf_model(orig_word,similiar_word)
+    #ans用于存放最后总相似度，为每句权重和相似度的积
+    total_similiariliarities = 0
     for i in range(len(weight)):
-        total_similiarities += weight[i]*sim_value[i]
-    total_similiarities = (str("%.2f") % total_similiarities)
-    print(total_similiarities)
+        total_similiariliarities += weight[i]*similiar_value[i]
+    total_similiariliarities = (str("%.2f") % total_similiariliarities)
+    print(total_similiariliarities)
     #将结果输出至指定文档
     file = open(path3,'w', encoding='UTF-8')
-    file.write(total_similiarities)
+    file.write(total_similiariliarities)
     file.close()
 
     time_end = time.time()
