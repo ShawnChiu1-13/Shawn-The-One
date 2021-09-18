@@ -45,3 +45,22 @@ def tfidf_model(items,sim_items):
         sim_max = max(sim)
         sim_value.append(sim_max)
     return sim_value
+
+#求每段话在文章中的权重
+def get_weight(file_data,file_sentence):
+    #权重列表
+    weight = []
+    #计算文章总字词长度
+    file_len = 0
+    #quanzhong用来留存每句话的权重
+    quanzhong = 0
+    for word in file_data:
+        if '\u4e00'<=word<='\u9fff':
+            file_len +=1
+    for sentence in file_sentence:
+        for word in sentence:
+            if '\u4e00' <= word <= '\u9fff':
+                quanzhong += 1
+        weight.append(quanzhong/file_len)
+        quanzhong = 0
+    return weight
