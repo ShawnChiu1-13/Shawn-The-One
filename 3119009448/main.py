@@ -82,14 +82,7 @@ if __name__ == '__main__':
     #关闭原始文档和相似文档
     orig_file.close()
     similiar_file.close()
-    #空文本判断异常（新增）
-    if len(orig_data) == 0:
-        print("原始文本为空")
-        raise
 
-    elif len(similiar_data) == 0:
-        print("相似文本为空")
-        raise
     #对原始文档进行分句分词
     orig_sentence =creat_sentence(orig_data)
     orig_word = [[word for word in jieba.lcut(sentence)] for sentence in orig_sentence]
@@ -100,15 +93,15 @@ if __name__ == '__main__':
     weight = get_weight(similiar_data,similiar_sentence)
     #获取相似文档相似度列表
     similiar_value = tfidf_model(orig_word,similiar_word)
-    #ans用于存放最后总相似度，为每句权重和相似度的积
-    total_similiariliarities = 0
+    #total_similiarities用于存放最后总相似度，为每句权重和相似度的积
+    total_similiarities = 0
     for i in range(len(weight)):
-        total_similiariliarities += weight[i]*similiar_value[i]
-    total_similiariliarities = (str("%.2f") % total_similiariliarities)
-    print(total_similiariliarities)
+        total_similiarities += weight[i]*similiar_value[i]
+    total_similiarities = (str("%.2f") % total_similiarities)
+    print(total_similiarities)
     #将结果输出至指定文档
     file = open(path3,'w', encoding='UTF-8')
-    file.write(total_similiariliarities)
+    file.write(total_similiarities)
     file.close()
 
     time_end = time.time()
